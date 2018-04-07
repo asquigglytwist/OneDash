@@ -1,0 +1,46 @@
+﻿#CurrentProducts details {
+    /*margin-left: 15px;
+    padding-left: 15px;*/
+}
+
+li.releaseDetails {
+    border: 1px dotted transparent;
+    border-radius: 1px;
+    transition: border-color var(--transition-time) ease-out, border-radius var(--transition-time) ease-out, background-color var(--transition-time) ease-out;
+}
+
+li.releaseDetails > details > summary > section:first-of-type {
+    min-width: 60vw;
+    width: 65%;
+    display: inline-grid;
+    grid-gap: 10px;
+    grid-template-columns: 12em 10em 10em auto;
+}
+
+li.releaseDetails:hover,
+li.releaseDetails:focus,
+li.releaseDetails:active {
+    background-color: var(--mild-alternating-color);
+    border-radius: 5px;
+    border-color: black;
+}
+
+li.releaseDetails > details > section {
+    min-width: 60vw;
+    width: 65%;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 10em auto;
+}
+
+li.releaseDetails summary[data-risk-level="Green"] {
+    background-color: #99ff99;
+}
+
+li.releaseDetails summary[data-risk-level="Yellow"] {
+    background-color: #ffffa5;
+}
+
+li.releaseDetails summary[data-risk-level="Red"] {
+    background-color: #ff5050;
+}
