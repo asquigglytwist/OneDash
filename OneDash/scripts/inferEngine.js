@@ -58,6 +58,27 @@ class HasNumber extends InferenceTest {
     }
 }
 
+class IsADate extends InferenceTest {
+    constructor() {
+        super();
+        this._parsedValue = new Date();
+    }
+    get parsedValue() {
+        return this._parsedValue;
+    }
+    /* [BIB]:  https://stackoverflow.com/questions/7445328/check-if-a-string-is-a-date-value */
+    static isDate(date) {
+        return (date !== "Invalid Date" && !isNaN(date)) ? true : false;
+    }
+    matches(nodeContent) {
+        if (nodeContent && nodeContent.length) {
+            this._parsedValue = new Date(nodeContent);
+            return IsADate.isDate(this._parsedValue);
+        }
+        return false;
+    }
+}
+
 
 class ValueTransform {
     transform(parsedValue) {
@@ -83,6 +104,69 @@ class BugId extends ValueTransform {
     }
 }
 
+class RelativeDateInfo extends ValueTransform {
+    constructor() {
+        super();
+        RelativeDateInfo._AVG_DAYS_PER_YEAR = 365.25;
+        RelativeDateInfo._AVG_DAYS_PER_MONTH = 30.4375;
+        RelativeDateInfo._MS_PER_DAY = 1000 * 60 * 60 * 24;
+    }
+    // [BIB]:  https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript
+    static dateDiffInDays(a, b) {
+        // Discard the time and time-zone information.
+        let utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+        let utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+        return Math.floor((utc2 - utc1) / RelativeDateInfo._MS_PER_DAY);
+    }
+    static daysToRelativeTimeSpan(diffInDays) {
+        var absDiffInDays = Math.abs(diffInDays);
+        if (absDiffInDays < 1) {
+            return "today";
+        }
+        let years = Math.floor(absDiffInDays / RelativeDateInfo._AVG_DAYS_PER_YEAR),
+            residue = Math.floor(absDiffInDays % RelativeDateInfo._AVG_DAYS_PER_YEAR),
+            months = Math.floor(residue / RelativeDateInfo._AVG_DAYS_PER_MONTH),
+            days = Math.floor(absDiffInDays % RelativeDateInfo._AVG_DAYS_PER_MONTH),
+            relativeTimeSpan = "~ ";
+        if (years > 0) {
+            if (years == 1) {
+                relativeTimeSpan = "1 year, ";
+            }
+            else {
+                relativeTimeSpan = years + "years, ";
+            }
+        }
+        if (months > 0) {
+            if (months == 1) {
+                relativeTimeSpan += "1 month, ";
+            }
+            else {
+                relativeTimeSpan += months + " months, ";
+            }
+        }
+        if (days > 0) {
+            if (days == 1) {
+                relativeTimeSpan += "1 day ";
+            }
+            else {
+                relativeTimeSpan += days + " days ";
+            }
+        }
+        if (diffInDays > 0) {
+            relativeTimeSpan += "ago.";
+        }
+        else {
+            relativeTimeSpan += "from today.";
+        }
+        return relativeTimeSpan;
+    }
+    transform(parsedValue, curNode) {
+        var diff = RelativeDateInfo.dateDiffInDays(parsedValue, new Date());
+        var relativeTimeSpan = RelativeDateInfo.daysToRelativeTimeSpan(diff);
+        curNode.setAttribute("title", relativeTimeSpan);
+    }
+}
+
 
 class InferEngine {
     static inferFromPage(query) {
@@ -103,9 +187,11 @@ class InferEngine {
         //mapTests.set("IsEmpty", new IsEmpty());
         mapTests.set("IsANumber", new IsANumber());
         //mapTests.set("HasNumber", new HasNumber());
+        mapTests.set("IsADate", new IsADate());
         //mapTransforms.set("IsEmpty", new IsEmpty());
         mapTransforms.set("IsANumber", new BugId());
         //mapTransforms.set("HasNumber", new HasNumber());
+        mapTransforms.set("IsADate", new RelativeDateInfo());
         for (let i = 0, len = nodes.length; i < len; i++) {
             let curNode = nodes[i];
             console.debug("Node [" + i + "]" + curNode.innerHTML);
