@@ -75,7 +75,9 @@
         </asp:Repeater>
         <footer></footer>
     </article>
-    <script src="scripts/detailshandler.js" async="async" defer="defer">
+    <script src="scripts/detailsHandler.js" async="async" defer="defer">
+    </script>
+    <script src="scripts/inferEngine.js" async="async" defer="defer" onload="InferEngine.inferFromPage('table > tbody > tr > td');">
     </script>
 </body>
 </html>
