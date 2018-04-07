@@ -97,13 +97,17 @@
                     placeholder="Enter version description here"
                     ToolTip="Enter version description here" />
                 <label for="DDLRStage">Stage</label>
-                <asp:DropDownList ID="DDLRStage" runat="server" />
+                <asp:DropDownList ID="DDLRStage" runat="server"
+                    ToolTip="Current Stage of the Release." />
                 <label for="TXTRTargetDate">Target Date</label>
-                <asp:TextBox TextMode="Date" ID="TXTRTargetDate" runat="server" />
+                <asp:TextBox TextMode="Date" ID="TXTRTargetDate" runat="server"
+                    ToolTip="Target Date for the Release." />
                 <label for="DDLRRisk">Risk Assessment</label>
-                <asp:DropDownList ID="DDLRRisk" runat="server" />
-                <label for="DDLRRisk">Bug List (CSV)</label>
-                <asp:FileUpload ID="FURBugList" runat="server" AllowMultiple="false" />
+                <asp:DropDownList ID="DDLRRisk" runat="server"
+                    ToolTip="(Assessed) Risk Level of the Release." />
+                <label for="FURBugList">Bug List (CSV)</label>
+                <asp:FileUpload ID="FURBugList" runat="server" AllowMultiple="false"
+                    ToolTip="(CSV) file with Bug List for the Release; Max permitted size = 25MB." />
             </section>
             <section class="actionButtons">
                 <asp:Button ID="BTNRAdd" Text="Add" CssClass="ghostButton" runat="server"
