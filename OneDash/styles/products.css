@@ -1,0 +1,57 @@
+﻿#Products {
+    width: 75vw;
+    margin: auto;
+}
+
+select {
+    min-width: 100px;
+}
+
+#Products > fieldset {
+    border: 1px dotted var(--panel-boundary-color);
+    margin: 3px;
+    padding: 3px;
+}
+
+.twoColGrid {
+    min-width: 60vw;
+    width: 65%;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 12em auto;
+}
+
+#Products input[type="text"] {
+    border: 1px dotted mediumaquamarine;
+    transition: border-color var(--transition-time) ease-out;
+}
+
+#Products input[type="text"]:hover,
+#Products input[type="text"]:active,
+#Products input[type="text"]:focus {
+    border-color: black;
+}
+
+.twoColGrid > label:nth-of-type(even),
+.twoColGrid > input[type="text"]:nth-of-type(odd):not([disabled]) {
+    background-color: var(--mild-alternating-color);
+}
+
+#TXTPCodeName:disabled,
+#TXTVVersion:not(:placeholder-shown):disabled,
+#TXTRReleaseCode:not(:placeholder-shown):disabled {
+    text-align: center;
+    text-decoration: double !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: black !important;
+    background-color: white !important;
+    border: 0 !important;
+    opacity: 1 !important;
+}
+
+.actionButtons {
+    margin: 3px;
+    margin-top: 8px;
+    padding: 3px;
+}
