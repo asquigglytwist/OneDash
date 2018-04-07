@@ -4,12 +4,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Products</title>
+    <title>DashBoard</title>
     <link rel="stylesheet" href="styles/global.css" />
     <link rel="stylesheet" href="styles/dashboard.css" />
 </head>
 <body>
-    <a href="#"><h1>Products</h1></a>
+    <a href="#"><h1 title="Products">Products</h1></a>
+    <button class="ghostButton floatRight" title="Collapse All" onclick="toggleExpansionOfDetails(false);">Collapse All</button>
+    <button class="ghostButton floatRight" title="Expand All" onclick="toggleExpansionOfDetails(true);">Expand All</button>
     <article id="CurrentProducts">
         <header>
             <h2>Current Products</h2>
