@@ -21,38 +21,42 @@
                         <div class="inlineBlock">
                             <%# Eval("DisplayName") %> &nbsp;&mdash;&nbsp; <%# Eval("Description") %>
                         </div>
+                        <div class="editLink"><a href="/Products/<%# Eval("PermaLink") %>" title="Click to Edit the Product details">Edit</a></div>
                     </summary>
                     <h3>Versions:</h3>
                     <ul class="noListStyle">
-                        <asp:Repeater ID="rpProductVersions" runat="server" DataSource='<%# Eval("Versions") %>'>
+                        <asp:Repeater ID="rpProductVersions" runat="server" DataSource='<%# Eval("ProductVersions") %>'>
                             <ItemTemplate>
                                 <li class="versionDetails">
                                     <details>
                                         <summary>
-                                            <h4 class="inlineBlock"><%# Eval("DisplayVersion") %></h4>
+                                            <h4 class="inlineBlock"><%# Eval("DisplayName") %></h4>
+                                            <div class="editLink"><a href="/Products/<%# Eval("PermaLink") %>" title="Click to Edit the Version details">Edit</a></div>
                                         </summary>
                                         <ul class="noListStyle">
-                                            <asp:Repeater ID="rpVersionReleases" runat="server" DataSource='<%# Eval("Releases") %>'>
+                                            <asp:Repeater ID="rpVersionReleases" runat="server" DataSource='<%# Eval("ProductVersionReleases") %>'>
                                                 <ItemTemplate>
                                                     <li class="releaseDetails">
                                                         <details>
                                                             <summary data-risk-level="<%# Eval("Risk").ToString() %>">
                                                                 <section>
                                                                     <div class="inlineBlock">
-                                                                        <%# Eval("ReleaseName") %>
+                                                                        <%# Eval("DisplayName") %>
                                                                     </div>
                                                                     <div class="inlineBlock">
                                                                         <%# Eval("Stage").ToString() %>
                                                                     </div>
                                                                     <div class="inlineBlock">
-                                                                        <%# Eval("TargetDate").ToString() %>
+                                                                        <%# Eval("TargetDate") %>
                                                                     </div>
                                                                     <div class="inlineBlock">
                                                                         <%# Eval("Risk").ToString() %>
                                                                     </div>
                                                                 </section>
+                                                                <div class="editLink"><a href="/Products/<%# Eval("PermaLink") %>" title="Click to Edit the Release details">Edit</a></div>
                                                             </summary>
                                                             <section>
+                                                                <%# Eval("BugListAsTable").ToString() %>
                                                             </section>
                                                         </details>
                                                     </li>
