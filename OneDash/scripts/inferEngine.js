@@ -79,6 +79,27 @@ class IsADate extends InferenceTest {
     }
 }
 
+class IsEmail extends InferenceTest {
+    constructor() {
+        super();
+        this._parsedValue = [];
+    }
+    matches(nodeContent) {
+        if (nodeContent && nodeContent.length) {
+            // [BIB]:  https://stackoverflow.com/a/16424719
+            var emailsArray = nodeContent.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+            if (emailsArray != null && emailsArray.length) {
+                this._parsedValue = emailsArray;
+                return true;
+            }
+        }
+        return false;
+    }
+    get parsedValue() {
+        return this._parsedValue;
+    }
+}
+
 
 class ValueTransform {
     transform(parsedValue) {
@@ -167,6 +188,23 @@ class RelativeDateInfo extends ValueTransform {
     }
 }
 
+class EmailAutoLinkify extends ValueTransform {
+    constructor() {
+        super();
+    }
+    transform(parsedValue, curNode) {
+        let newContent = curNode.innerHTML;
+        if (parsedValue.length > 0) {
+            for (var i = 0, len = parsedValue.length; i < len; i++) {
+                let email = parsedValue[i], anchor = "<a href=mailto:" + email + " title=mailto:\"" + email + "\">" + email + "</a>";
+                newContent = newContent.replace(email, anchor);
+            }
+            curNode.innerHTML = newContent;
+        }
+        return parsedValue;
+    }
+}
+
 
 class InferEngine {
     static inferFromPage(query) {
@@ -188,10 +226,12 @@ class InferEngine {
         mapTests.set("IsANumber", new IsANumber());
         //mapTests.set("HasNumber", new HasNumber());
         mapTests.set("IsADate", new IsADate());
+        mapTests.set("IsEmail", new IsEmail());
         //mapTransforms.set("IsEmpty", new IsEmpty());
         mapTransforms.set("IsANumber", new BugId());
         //mapTransforms.set("HasNumber", new HasNumber());
         mapTransforms.set("IsADate", new RelativeDateInfo());
+        mapTransforms.set("IsEmail", new EmailAutoLinkify());
         for (let i = 0, len = nodes.length; i < len; i++) {
             let curNode = nodes[i];
             console.debug("Node [" + i + "]" + curNode.innerHTML);
