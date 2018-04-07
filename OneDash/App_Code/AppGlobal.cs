@@ -20,6 +20,8 @@ public static class AppGlobal
 
     public static void RegisterOneDashCustomRoutes(RouteCollection routes)
     {
+        routes.MapPageRoute("Defaults", "", "~/DashBoard.aspx", true);
+        routes.MapPageRoute("DashBoard", "DashBoard", "~/DashBoard.aspx", true);
         routes.MapPageRoute("Products", "Products", "~/AdminArea/Products.aspx", true);
         routes.MapPageRoute("ProductInfo", "Products/{ProdCode}", "~/AdminArea/Products.aspx", true);
         routes.MapPageRoute("VersionInfo", "Products/{ProdCode}/{VerCode}", "~/AdminArea/Products.aspx", true);
