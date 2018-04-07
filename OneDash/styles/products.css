@@ -8,14 +8,41 @@ select {
 }
 
 #Products > fieldset {
-    border: 1px dotted var(--panel-boundary-color);
+    border: 0;
+    border-top: 2px outset var(--panel-boundary-color);
+    border-left: 3px outset;
+    border-top-left-radius: 5px;
+    margin: 8px 7px 10px;
+    padding: 7px;
+}
+#Products > fieldset:hover, #Products > fieldset:focus, #Products > fieldset:active {
+    border-color: indianred;
+}
+
+/*#Products > fieldset:nth-of-type(1) {
+    margin-left: 7px;
+}
+
+#Products > fieldset:nth-of-type(2) {
+    margin-left: 14px;
+}
+
+#Products > fieldset:nth-of-type(3) {
+    margin-left: 21px;
+}
+
+#Products > fieldset:nth-of-type(4) {
+    margin-left: 28px;
+}*/
+
+#Products > fieldset > legend {
     margin: 3px;
     padding: 3px;
 }
 
 .twoColGrid {
     min-width: 60vw;
-    width: 65%;
+    width: 85%;
     display: grid;
     grid-gap: 10px;
     grid-template-columns: 12em auto;
