@@ -3,6 +3,11 @@
     padding-left: 15px;*/
 }
 
+div.editLink {
+    display: inline-block;
+    float: right;
+}
+
 li.releaseDetails {
     border: 1px dotted transparent;
     border-radius: 1px;
@@ -43,4 +48,24 @@ li.releaseDetails summary[data-risk-level="Yellow"] {
 
 li.releaseDetails summary[data-risk-level="Red"] {
     background-color: #ff5050;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-spacing: 5px;
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    text-align: center;
+}
+
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+
+table tr:nth-child(odd) {
+    background-color: #fff;
 }
