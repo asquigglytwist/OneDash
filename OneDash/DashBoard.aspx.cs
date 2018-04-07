@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.UI;
 
-public partial class DashBoard : Page
+public partial class DashBoard : System.Web.UI.Page
 {
     List<Product> Products;
 
