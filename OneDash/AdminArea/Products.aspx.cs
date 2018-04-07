@@ -147,10 +147,18 @@ public partial class AdminArea_Products : System.Web.UI.Page
         {
             if (Path.GetExtension(FURBugList.FileName).ToLower().Equals("csv"))
             {
-                var dirPath = Path.Combine(AppGlobal.AppDataDirectory, DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue, DDLExistingReleases.SelectedValue);
-                AppGlobal.CreateDirectory(dirPath);
-                var filePath = Path.Combine(dirPath, "BugList.csv");
-                FURBugList.SaveAs(filePath);
+                if (FURBugList.FileBytes.LongLength < (25 * 1024 * 1024))
+                {
+                    var dirPath = Path.Combine(AppGlobal.AppDataDirectory, DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue, DDLExistingReleases.SelectedValue);
+                    AppGlobal.CreateDirectory(dirPath);
+                    var filePath = Path.Combine(dirPath, "BugList.csv");
+                    FURBugList.SaveAs(filePath);
+                }
+                else
+                {
+                    throw new Exception(string.Format("Uploaded file {0}'s size 0x{1} exceeds the limit of 25MB.",
+                        FURBugList.FileName, FURBugList.FileBytes.LongLength.ToString("X16")));
+                }
             }
             else
             {
