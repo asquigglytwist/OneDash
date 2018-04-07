@@ -27,6 +27,11 @@ public class Release
     { get; set; }
     public RiskLevel Risk
     { get; set; }
+    public string PermaLink
+    { get; set; }
+
+    public string BugListAsTable
+    { get; protected set; }
 
     public Release(string codeName, string displayName, string description, string stage, string targetDate, string risk)
     {
@@ -97,11 +102,22 @@ public class Release
                 stage = xDoc.Descendants(xtStage).First().Value,
                 targetDate = xDoc.Descendants(xtTargetDate).First().Value,
                 risk = xDoc.Descendants(xtRiskLevel).First().Value;
-            return new Release(xCodeName, displayName, description, stage, targetDate, risk);
+            var rel = new Release(xCodeName, displayName, description, stage, targetDate, risk);
+            rel.PermaLink = string.Format("{0}/{1}/{2}", prodCodeName, verCodeName, relCodeName);
+            return rel;
         }
         catch (Exception e)
         {
             throw new Exception(string.Format("Unable to read Release info for {0}.{1}Message:{1}{2}.", relCodeName, Environment.NewLine, e.Message), e);
         }
+    }
+
+    public static Release LoadFromFileWithBugList(string prodCodeName, string verCodeName, string relCodeName)
+    {
+        var rel = LoadFromFile(prodCodeName, verCodeName, relCodeName);
+        string filePath = Path.Combine(AppGlobal.AppDataDirectory, prodCodeName, verCodeName, relCodeName, "BugList.csv");
+        var csvParser = new CSV2HTMLParser(filePath);
+        rel.BugListAsTable = csvParser.ToHTMLString(rel.DisplayName);
+        return rel;
     }
 }
