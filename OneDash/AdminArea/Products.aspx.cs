@@ -13,39 +13,7 @@ public partial class AdminArea_Products : System.Web.UI.Page
     #endregion
 
     #region Helpers
-    private bool IsValidProductInfo()
-    {
-        TextBox[] textBoxes = { TXTPCodeName, TXTPDesc, TXTPDisplayName, TXTPProjMgr, TXTPProdMgr };
-        string[] errorMsgs = { "CodeName",
-            "Description",
-            "DisplayName",
-            "ProjectManager",
-            "ProductManager"
-        };
-        for (var i = 0; i < textBoxes.Length; i++)
-        {
-            if (string.IsNullOrWhiteSpace(textBoxes[i].Text))
-            {
-                throw new Exception(string.Format("{0} for the product is mandatory.", errorMsgs[i]));
-            }
-        }
-        return true;
-    }
-
-    private void SaveProductToFile(string codeName)
-    {
-        if (IsValidProductInfo())
-        {
-            var prod = new Product(codeName, TXTPDesc.Text, TXTPDisplayName.Text, TXTPProjMgr.Text, TXTPProdMgr.Text);
-            if (prod.SaveToFile())
-            {
-                DDLExistingProducts.Items.Add(new ListItem(codeName, codeName));
-                ResetUIState();
-                //LastKnownProduct = prod;
-            }
-        }
-    }
-
+    #region UI State Changers
     private void ToggleVersionPanelEnabled(bool enabled)
     {
         TXTVVersion.Enabled = TXTVDisplayName.Enabled = TXTVDescription.Enabled = BTNVAdd.Enabled = enabled;
@@ -71,6 +39,27 @@ public partial class AdminArea_Products : System.Web.UI.Page
         DDLExistingVersions.Items.Clear();
         DDLExistingVersions.Enabled = false;
         ToggleVersionPanelEnabled(false);
+    }
+    #endregion
+
+    #region Validators
+    private bool IsValidProductInfo()
+    {
+        TextBox[] textBoxes = { TXTPCodeName, TXTPDesc, TXTPDisplayName, TXTPProjMgr, TXTPProdMgr };
+        string[] errorMsgs = { "CodeName",
+            "Description",
+            "DisplayName",
+            "ProjectManager",
+            "ProductManager"
+        };
+        for (var i = 0; i < textBoxes.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(textBoxes[i].Text))
+            {
+                throw new Exception(string.Format("{0} for the product is mandatory.", errorMsgs[i]));
+            }
+        }
+        return true;
     }
 
     private bool IsValidVersionInfo()
@@ -115,6 +104,22 @@ public partial class AdminArea_Products : System.Web.UI.Page
         }
         return true;
     }
+    #endregion
+
+    #region Save To File(r)s
+    private void SaveProductToFile(string codeName)
+    {
+        if (IsValidProductInfo())
+        {
+            var prod = new Product(codeName, TXTPDesc.Text, TXTPDisplayName.Text, TXTPProjMgr.Text, TXTPProdMgr.Text);
+            if (prod.SaveToFile())
+            {
+                DDLExistingProducts.Items.Add(new ListItem(codeName, codeName));
+                ResetUIState();
+                //LastKnownProduct = prod;
+            }
+        }
+    }
 
     private void SaveVersionToFile(string codeName)
     {
@@ -135,21 +140,21 @@ public partial class AdminArea_Products : System.Web.UI.Page
             var release = new Release(codeName, TXTRDisplayName.Text, TXTRDescription.Text, DDLRStage.SelectedValue, TXTRTargetDate.Text, DDLRRisk.SelectedValue);
             if (release.SaveToFile(DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue))
             {
-                AcceptUploadedFile();
+                AcceptUploadedFile(codeName);
                 ResetUIState();
             }
         }
     }
 
-    private void AcceptUploadedFile()
+    private void AcceptUploadedFile(string relCodeName)
     {
         if (FURBugList.HasFile)
         {
-            if (Path.GetExtension(FURBugList.FileName).ToLower().Equals("csv"))
+            if (Path.GetExtension(FURBugList.FileName).ToLower().Equals(".csv"))
             {
                 if (FURBugList.FileBytes.LongLength < (25 * 1024 * 1024))
                 {
-                    var dirPath = Path.Combine(AppGlobal.AppDataDirectory, DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue, DDLExistingReleases.SelectedValue);
+                    var dirPath = Path.Combine(AppGlobal.AppDataDirectory, DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue, relCodeName);
                     AppGlobal.CreateDirectory(dirPath);
                     var filePath = Path.Combine(dirPath, "BugList.csv");
                     FURBugList.SaveAs(filePath);
@@ -166,7 +171,9 @@ public partial class AdminArea_Products : System.Web.UI.Page
             }
         }
     }
+    #endregion
 
+    #region On Selection Change
     private void OnProductSelectionChange()
     {
         if (DDLExistingProducts.SelectedValue.Equals(NoneSelectedValue))
@@ -238,6 +245,7 @@ public partial class AdminArea_Products : System.Web.UI.Page
         TXTRReleaseCode.Enabled = BTNRAdd.Enabled = false;
         BTNRUpdate.Enabled = true;
     }
+    #endregion
 
     private void HandlePageRouteData()
     {
