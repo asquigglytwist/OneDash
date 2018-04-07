@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Web.UI.WebControls;
 
 public partial class AdminArea_Products : System.Web.UI.Page
@@ -54,7 +55,7 @@ public partial class AdminArea_Products : System.Web.UI.Page
     private void ToggleReleasePanelEnabled(bool enabled)
     {
         TXTRReleaseCode.Enabled = TXTRDisplayName.Enabled = TXTRDescription.Enabled = BTNRAdd.Enabled =
-            DDLRStage.Enabled = DDLRRisk.Enabled = TXTRTargetDate.Enabled = enabled;
+            DDLRStage.Enabled = DDLRRisk.Enabled = TXTRTargetDate.Enabled = FURBugList.Enabled = enabled;
         TXTRReleaseCode.Text = TXTRDisplayName.Text = TXTRDescription.Text = string.Empty;
     }
 
@@ -134,7 +135,26 @@ public partial class AdminArea_Products : System.Web.UI.Page
             var release = new Release(codeName, TXTRDisplayName.Text, TXTRDescription.Text, DDLRStage.SelectedValue, TXTRTargetDate.Text, DDLRRisk.SelectedValue);
             if (release.SaveToFile(DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue))
             {
+                AcceptUploadedFile();
                 ResetUIState();
+            }
+        }
+    }
+
+    private void AcceptUploadedFile()
+    {
+        if (FURBugList.HasFile)
+        {
+            if (Path.GetExtension(FURBugList.FileName).ToLower().Equals("csv"))
+            {
+                var dirPath = Path.Combine(AppGlobal.AppDataDirectory, DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue, DDLExistingReleases.SelectedValue);
+                AppGlobal.CreateDirectory(dirPath);
+                var filePath = Path.Combine(dirPath, "BugList.csv");
+                FURBugList.SaveAs(filePath);
+            }
+            else
+            {
+                throw new Exception(string.Format("Uploaded file {0} is not a CSV file.", FURBugList.FileName));
             }
         }
     }
@@ -272,6 +292,9 @@ public partial class AdminArea_Products : System.Web.UI.Page
                     DDLExistingProducts.Items.Add(new ListItem(codeName, codeName));
                 }
             }
+            DDLExistingVersions.Items.Clear();
+            DDLExistingReleases.Items.Clear();
+            DDLExistingVersions.Enabled = DDLExistingReleases.Enabled = false;
             AddEnumValuesToDropDown(DDLRRisk, typeof(RiskLevel));
             AddEnumValuesToDropDown(DDLRStage, typeof(ReleaseStages));
             ToggleVersionPanelEnabled(false);
@@ -320,6 +343,10 @@ public partial class AdminArea_Products : System.Web.UI.Page
                     Response.Redirect("~/Products/" + DDLExistingProducts.SelectedValue
                     + "/" + DDLExistingVersions.SelectedValue);
                 }
+            }
+            else
+            {
+                Response.Redirect("~/Products/");
             }
         }
         else
