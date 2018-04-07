@@ -1,15 +1,9 @@
 ﻿function onBeforePrint() {
-    var ndAllDetails = document.getElementsByTagName("details"), len = ndAllDetails.length;
-    for (var i = 0; i < len; i++) {
-        ndAllDetails[i].setAttribute("open", "");
-    }
+    toggleExpansionOfDetails(true);
 }
 
 function onAfterPrint() {
-    var ndAllDetails = document.getElementsByTagName("details"), len = ndAllDetails.length;
-    for (var i = 0; i < len; i++) {
-        ndAllDetails[i].removeAttribute("open");
-    }
+    toggleExpansionOfDetails(false);
     onInit();
 }
 
@@ -27,6 +21,24 @@ function onInit() {
                 var firstRelease = ndReleases[0];
                 firstRelease.setAttribute("open", "");
             }
+        }
+    }
+}
+
+function getAllProductDetailsNodes() {
+    return document.getElementById("CurrentProducts").getElementsByTagName("details");
+}
+
+function toggleExpansionOfDetails(expand) {
+    var ndAllDetails = document.getElementsByTagName("details"), len = ndAllDetails.length;
+    if (expand) {
+        for (var i = 0; i < len; i++) {
+            ndAllDetails[i].setAttribute("open", "open");
+        }
+    }
+    else {
+        for (var i = 0; i < len; i++) {
+            ndAllDetails[i].removeAttribute("open");
         }
     }
 }
