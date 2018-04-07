@@ -15,7 +15,18 @@ public class CSV2HTMLParser
         CSVFilePath = filePath;
     }
 
-    public string ToHTMLString(string tableCaption)
+    // [BIB]:  https://stackoverflow.com/a/8809437
+    private string ReplaceFirst(string text, string search, string replace)
+    {
+        int pos = text.IndexOf(search);
+        if (pos < 0)
+        {
+            return text;
+        }
+        return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+    }
+
+    public string ToHTMLString(string tableCaption, /*bool firstRowIsHeader =true,*/ bool stripQuotes = true)
     {
         if (!File.Exists(CSVFilePath))
         {
@@ -24,6 +35,7 @@ public class CSV2HTMLParser
         var sbHTable = new StringBuilder();
         var curLine = string.Empty;
         sbHTable.AppendFormat("<table><caption>{0}</caption>", tableCaption);
+        sbHTable.Append("<tbody>");
         foreach (var line in File.ReadLines(CSVFilePath))
         {
             sbHTable.Append("<tr>");
@@ -40,12 +52,16 @@ public class CSV2HTMLParser
                     }
                     token = sbFullToken.ToString();
                 }
-                sbHTable.AppendFormat("<td>{0}</td>", string.IsNullOrWhiteSpace(token) ? "&mdash;" : token);
+                if (stripQuotes)
+                {
+                    token = token.Replace("\"", "");
+                }
+                sbHTable.AppendFormat("<td title=\"{0}\" data-tooltip=\"{0}\">{0}</td>", string.IsNullOrWhiteSpace(token) ? "&mdash;" : token);
             }
             sbHTable.Append("</tr>");
         }
-        sbHTable.Append("<tbody>");
         sbHTable.Append("</tbody></table>");
+        //return ReplaceFirst(ReplaceFirst(sbHTable.ToString(), "<td>", "<th>"), "</td>", "</th>");
         return sbHTable.ToString();
     }
 }
