@@ -20,6 +20,11 @@ public class Version
     { get; set; }
     public string Description
     { get; set; }
+    public string PermaLink
+    { get; set; }
+
+    public List<Release> ProductVersionReleases
+    { get; set; }
 
     public Version(string versionCode, string displayVersion, string description)
     {
@@ -75,7 +80,9 @@ public class Version
             string xCodeName = xDoc.Descendants(xtVersionCode).First().Value,
                 displayName = xDoc.Descendants(xtDisplayName).First().Value,
                 description = xDoc.Descendants(xtDescription).First().Value;
-            return new Version(xCodeName, displayName, description);
+            var ver = new Version(xCodeName, displayName, description);
+            ver.PermaLink = string.Format("{0}/{1}", prodCodeName, verCodeName);
+            return ver;
         }
         catch (Exception e)
         {
