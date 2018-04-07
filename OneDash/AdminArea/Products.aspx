@@ -105,6 +105,8 @@
                 <asp:TextBox TextMode="Date" ID="TXTRTargetDate" runat="server" />
                 <label for="DDLRRisk">Risk Assessment</label>
                 <asp:DropDownList ID="DDLRRisk" runat="server" />
+                <label for="DDLRRisk">Bug List (CSV)</label>
+                <asp:FileUpload ID="FURBugList" runat="server" AllowMultiple="false" />
             </section>
             <section class="actionButtons">
                 <asp:Button ID="BTNRAdd" Text="Add" CssClass="ghostButton" runat="server"
