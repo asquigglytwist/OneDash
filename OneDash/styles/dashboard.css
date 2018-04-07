@@ -30,14 +30,6 @@ li.releaseDetails:active {
     border-color: black;
 }
 
-li.releaseDetails > details > section {
-    min-width: 60vw;
-    width: 65%;
-    display: grid;
-    grid-gap: 5px;
-    grid-template-columns: 10em auto;
-}
-
 li.releaseDetails summary[data-risk-level="Green"] {
     background-color: #99ff99;
 }
@@ -48,6 +40,11 @@ li.releaseDetails summary[data-risk-level="Yellow"] {
 
 li.releaseDetails summary[data-risk-level="Red"] {
     background-color: #ff5050;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
 }
 
 table, th, td {
@@ -62,10 +59,20 @@ th {
     text-align: center;
 }
 
+td {
+    overflow: hidden;
+}
+
 table tr:nth-child(even) {
     background-color: #eee;
 }
 
 table tr:nth-child(odd) {
     background-color: #fff;
+}
+
+a[href^="mailto"]:hover::after {
+    content: "\f0e0";
+    position: relative;
+    left: -3px;
 }
