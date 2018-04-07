@@ -281,11 +281,48 @@ public partial class AdminArea_Products : System.Web.UI.Page
 
     protected void Page_LoadComplete(object sender, EventArgs e)
     {
-        //if (Page.IsPostBack)
-        //{
-        //    //UpdateUrlToReflectSelection();
-        //}
-        //else
+        if (Page.IsPostBack)
+        {
+            string ctrlName = Page.Request.Params.Get("__EVENTTARGET");
+            if(ctrlName.Equals(DDLExistingProducts.ID))
+            {
+                if (DDLExistingProducts.SelectedIndex > 0)
+                {
+                    Response.Redirect("~/Products/" + DDLExistingProducts.SelectedValue);
+                }
+                else
+                {
+                    Response.Redirect("~/Products/");
+                }
+            }
+            else if (ctrlName.Equals(DDLExistingVersions.ID))
+            {
+                if (DDLExistingVersions.SelectedIndex > 0)
+                {
+                    Response.Redirect("~/Products/" + DDLExistingProducts.SelectedValue
+                    + "/" + DDLExistingVersions.SelectedValue);
+                }
+                else
+                {
+                    Response.Redirect("~/Products/" + DDLExistingProducts.SelectedValue);
+                }
+            }
+            else if (ctrlName.Equals(DDLExistingReleases.ID))
+            {
+                if (DDLExistingReleases.SelectedIndex > 0)
+                {
+                    Response.Redirect("~/Products/" + DDLExistingProducts.SelectedValue
+                    + "/" + DDLExistingVersions.SelectedValue
+                    + "/" + DDLExistingReleases.SelectedValue);
+                }
+                else
+                {
+                    Response.Redirect("~/Products/" + DDLExistingProducts.SelectedValue
+                    + "/" + DDLExistingVersions.SelectedValue);
+                }
+            }
+        }
+        else
         {
             HandlePageRouteData();
         }
