@@ -12,6 +12,7 @@
     <h1><a href="#">Products</a></h1>
     <form id="Products" runat="server">
         <fieldset id="DropDownsPanel">
+            <legend>Filter the Data:</legend>
             <label for="DDLExistingProducts">Product</label>
             <asp:DropDownList ID="DDLExistingProducts" runat="server" AutoPostBack="true"
                 OnSelectedIndexChanged="DDLExistingProducts_SelectedIndexChanged" />
@@ -23,28 +24,24 @@
                 OnSelectedIndexChanged="DDLExistingReleases_SelectedIndexChanged" />
         </fieldset>
         <fieldset id="ProductPanel">
-            <h2>Add / Edit a Product</h2>
+            <legend>Add / Edit a Product</legend>
             <section class="twoColGrid">
                 <label for="TXTPCodeName">Code Name</label>
                 <asp:TextBox runat="server" ID="TXTPCodeName" AutoCompleteType="Enabled" TextMode="SingleLine" Text=""
                     placeholder="Enter product's code name here"
                     ToolTip="Enter product's code name here" />
-
                 <label for="TXTPDisplayName">Display Name</label>
                 <asp:TextBox runat="server" ID="TXTPDisplayName" AutoCompleteType="Enabled" TextMode="SingleLine" Text=""
                     placeholder="Enter product's display name here"
                     ToolTip="Enter product's display name here" />
-
                 <label for="TXTPDesc">Description</label>
                 <asp:TextBox runat="server" ID="TXTPDesc" AutoCompleteType="Enabled" TextMode="SingleLine" Text=""
                     placeholder="Enter a brief description of the product here"
                     ToolTip="Enter a brief description of the product here" />
-
                 <label for="TXTPProjMgr">Project Manager</label>
                 <asp:TextBox runat="server" ID="TXTPProjMgr" AutoCompleteType="Enabled" TextMode="SingleLine" Text=""
                     placeholder="Enter Project Manager here"
                     ToolTip="Enter Project Manager here" />
-
                 <label for="TXTPProdMgr">Product Manager</label>
                 <asp:TextBox runat="server" ID="TXTPProdMgr" AutoCompleteType="Enabled" TextMode="SingleLine" Text=""
                     placeholder="Enter Product Manager here" title="Enter Product Manager here"
@@ -60,7 +57,7 @@
             </section>
         </fieldset>
         <fieldset id="VersionPanel" runat="server">
-            <h2>Add Version for a Product</h2>
+            <legend>Add Version for a Product</legend>
             <section class="twoColGrid">
                 <label for="TXTVVersion">Code Name</label>
                 <asp:TextBox runat="server" ID="TXTVVersion" AutoCompleteType="Enabled" TextMode="SingleLine" Text=""
@@ -85,7 +82,7 @@
             </section>
         </fieldset>
         <fieldset id="ReleasePanel" runat="server">
-            <h2>Add Release for a Version</h2>
+            <legend>Add Release for a Version</legend>
             <section class="twoColGrid">
                 <label for="TXTRReleaseCode">Code Name</label>
                 <asp:TextBox runat="server" ID="TXTRReleaseCode" AutoCompleteType="Enabled" TextMode="SingleLine" Text=""
