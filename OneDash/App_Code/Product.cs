@@ -39,6 +39,11 @@ public class Product
     { get; set; }
     public string ProductManager
     { get; set; }
+    public string PermaLink
+    { get; set; }
+
+    public List<Version> ProductVersions
+    { get; set; }
 
     public bool SaveToFile()
     {
@@ -100,7 +105,9 @@ public class Product
                 prodMgr = xDoc.Descendants(xtProdMgr).First().Value;
             if (codeName.Equals(xCodeName))
             {
-                return new Product(codeName, displayName, description, projMgr, prodMgr);
+                var prod = new Product(codeName, displayName, description, projMgr, prodMgr);
+                prod.PermaLink = codeName;
+                return prod;
             }
             else
             {
