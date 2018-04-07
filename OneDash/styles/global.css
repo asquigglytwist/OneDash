@@ -1,0 +1,54 @@
+﻿body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition-time: 1.2s;
+    --mild-alternating-color: #f5f5f5;
+    --panel-boundary-color: #080808;
+}
+
+.noListStyle {
+    list-style: none;
+}
+
+.inlineBlock {
+    display: inline-block;
+}
+
+.ghostButton {
+    display: inline-block;
+    border: 1px solid black;
+    text-align: center;
+    min-width: 50px;
+    min-height: 25px;
+    background-color: white;
+    color: #3a3a3a;
+    transition: background-color var(--transition-time) ease-out, color var(--transition-time) ease-out, border-radius var(--transition-time) ease-out, border-color var(--transition-time) ease-out;
+    box-shadow: 2px 2px gray;
+}
+
+.ghostButton:hover,
+.ghostButton:active,
+.ghostButton:focus {
+    background-color: #7a7a7a;
+    color: white;
+    border-radius: 5px;
+    border-color: #7a7a7a;
+}
+
+input[disabled],
+.ghostButton[disabled] {
+    background-color: black;
+    color: gray;
+    font-style: italic;
+    box-shadow: unset;
+    opacity: 0.3;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+input[type="text"][disabled] {
+    opacity: 0.3;
+}
+
+.ghostButton[disabled] {
+    text-decoration: line-through;
+    transform: rotate(180deg);
+}
