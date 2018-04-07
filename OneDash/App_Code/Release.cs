@@ -115,9 +115,23 @@ public class Release
     public static Release LoadFromFileWithBugList(string prodCodeName, string verCodeName, string relCodeName)
     {
         var rel = LoadFromFile(prodCodeName, verCodeName, relCodeName);
-        string filePath = Path.Combine(AppGlobal.AppDataDirectory, prodCodeName, verCodeName, relCodeName, "BugList.csv");
-        var csvParser = new CSV2HTMLParser(filePath);
-        rel.BugListAsTable = csvParser.ToHTMLString(rel.DisplayName);
+        var dirPath = Path.Combine(AppGlobal.AppDataDirectory, prodCodeName, verCodeName, relCodeName);
+        string htmlFilePath = Path.Combine(dirPath, "BugList.htmlSnippet"), htmlSnippet = string.Empty;
+        if (File.Exists(htmlFilePath))
+        {
+            htmlSnippet = File.ReadAllText(htmlFilePath);
+        }
+        else
+        {
+            string csvFilePath = Path.Combine(dirPath, "BugList.csv");
+            var csvParser = new CSV2HTMLParser(csvFilePath);
+            htmlSnippet = csvParser.ToHTMLString(rel.DisplayName);
+            if (!htmlSnippet.Equals("<div>--No Bug List available--</div>"))
+            {
+                File.WriteAllText(htmlFilePath, htmlSnippet, System.Text.Encoding.UTF8);
+            }
+        }
+        rel.BugListAsTable = htmlSnippet;
         return rel;
     }
 }
