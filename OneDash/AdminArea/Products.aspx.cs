@@ -299,6 +299,10 @@ public partial class AdminArea_Products : System.Web.UI.Page
     #region Page
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!Request.IsAuthenticated)
+        {
+            Response.Redirect("~/");
+        }
         if (!IsPostBack)
         {
             if (DDLExistingProducts.Items.FindByValue(NoneSelectedValue) == null)
