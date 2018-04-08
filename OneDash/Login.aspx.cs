@@ -10,7 +10,19 @@ public partial class Login : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (!Page.IsPostBack)
+        {
+            var browserCookies = Request.Browser.Cookies;
+            var browserJS = Request.Browser.EcmaScriptVersion.Major > 1;
+            if (!browserCookies)
+            {
+                throw new Exception("Cookies will have to be enabled.");
+            }
+            if (!browserJS)
+            {
+                throw new Exception("JavaScript has to be enabled.");
+            }
+        }
     }
 
     protected void BTNSubmit_Click(object sender, EventArgs e)
@@ -18,6 +30,7 @@ public partial class Login : System.Web.UI.Page
         var membershipProvider = new ProductAdminMembershipProvider();
         if (membershipProvider.ValidateUser(TXTLUserName.Text, TXTLPassWord.Text))
         {
+            // [BIB]:  https://stackoverflow.com/questions/912276/asp-net-membership-how-to-set-the-user-as-logged-in
             FormsAuthentication.SetAuthCookie(TXTLUserName.Text, false);
             var urlQuery = Request.Url.PathAndQuery;
             var ReturnUrl = "ReturnUrl=";
