@@ -159,7 +159,10 @@ public partial class AdminArea_Products : System.Web.UI.Page
                     var csvFilePath = Path.Combine(dirPath, "BugList.csv");
                     FURBugList.SaveAs(csvFilePath);
                     var cachedHTMLSnippetFilePath = Path.Combine(dirPath, "BugList.htmlSnippet");
-                    File.Delete(cachedHTMLSnippetFilePath);
+                    if (File.Exists(cachedHTMLSnippetFilePath))
+                    {
+                        File.Delete(cachedHTMLSnippetFilePath);
+                    }
                 }
                 else
                 {
