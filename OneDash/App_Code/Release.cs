@@ -4,40 +4,80 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 
+/// <summary>
+/// Represents a Product's release.
+/// </summary>
 public class Release
 {
+    /// <summary>
+    /// The File-Extension to be used for the XML document where "Release" gets Serialized.
+    /// </summary>
     public const string RelXMLExtension = "rel";
+    /// <summary>
+    /// XML Tag Names (for private use only).
+    /// </summary>
     const string xtRelease = "Release",
         xtReleaseCode = "ReleaseCode",
         xtDisplayName = "DisplayName",
         xtDescription = "Description",
         xtStage = "Stage",
         xtTargetDate = "TargetDate",
-        xtRiskLevel = "RiskLevel";
+        xtRiskLevel = "RiskLevel",
+        xtBuildNumber = "BuildNumber";
 
+    /// <summary>
+    /// The CodeName of the release - something catchy :).
+    /// </summary>
     public string CodeName
     { get; set; }
+    /// <summary>
+    /// The Name that should be used Displayed.
+    /// </summary>
     public string DisplayName
     { get; set; }
+    /// <summary>
+    /// A short description of what this Release is about or what features are expected.
+    /// </summary>
     public string Description
     { get; set; }
+    /// <summary>
+    /// The Current stage of the Release.
+    /// </summary>
     public ReleaseStages Stage
     { get; set; }
+    /// <summary>
+    /// Target Date for the Release.
+    /// </summary>
     public string TargetDate
     { get; set; }
+    /// <summary>
+    /// A manually assessed Risk Level for the Release.
+    /// </summary>
     public RiskLevel Risk
     { get; set; }
+    /// <summary>
+    /// Direct link (URL) to this Release within the Products page.
+    /// </summary>
     public string PermaLink
     { get; set; }
+    /// <summary>
+    /// Latest known (stable) Build Number for the Release.
+    /// </summary>
+    public string BuildNumber
+    { get; set; }
 
+    /// <summary>
+    /// (An optional) HTML Table snippet of the Bug List for the Release, if a CSV is available.
+    /// </summary>
     public string BugListAsTable
     { get; protected set; }
 
-    public Release(string codeName, string displayName, string description, string stage, string targetDate, string risk)
+    public Release(string codeName, string displayName, string description, string stage, string targetDate, string risk, string buildNumber)
     {
         CodeName = codeName ?? throw new ArgumentNullException(nameof(codeName));
         DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
         Description = description ?? throw new ArgumentNullException(nameof(description));
+        BuildNumber = buildNumber ?? throw new ArgumentNullException(nameof(buildNumber));
         if (Enum.TryParse(stage, out ReleaseStages relStage))
         {
             Stage = relStage;
@@ -64,19 +104,22 @@ public class Release
             ndDescription = xDoc.CreateElement(xtDescription),
             ndStage = xDoc.CreateElement(xtStage),
             ndTargetDate = xDoc.CreateElement(xtTargetDate),
-            ndRiskLevel = xDoc.CreateElement(xtRiskLevel);
+            ndRiskLevel = xDoc.CreateElement(xtRiskLevel),
+            ndBuildNumber = xDoc.CreateElement(xtBuildNumber);
         ndCodeName.InnerText = CodeName;
         ndDisplayName.InnerText = DisplayName;
         ndDescription.InnerText = Description;
         ndStage.InnerText = Stage.ToString();
         ndTargetDate.InnerText = TargetDate;
         ndRiskLevel.InnerText = Risk.ToString();
+        ndBuildNumber.InnerText = BuildNumber.ToString();
         docRoot.AppendChild(ndCodeName);
         docRoot.AppendChild(ndDisplayName);
         docRoot.AppendChild(ndDescription);
         docRoot.AppendChild(ndStage);
         docRoot.AppendChild(ndTargetDate);
         docRoot.AppendChild(ndRiskLevel);
+        docRoot.AppendChild(ndBuildNumber);
         xDoc.AppendChild(docRoot);
         try
         {
@@ -90,6 +133,13 @@ public class Release
         }
     }
 
+    /// <summary>
+    /// Load information on a Release from (previously) saved XML (.rel) file.
+    /// </summary>
+    /// <param name="prodCodeName">The associated Product's CodeName.</param>
+    /// <param name="verCodeName">The associated Version's CodeName.</param>
+    /// <param name="relCodeName">The associated Release's CodeName.</param>
+    /// <returns>A Release object constructed by DeSerializing the XML file.</returns>
     public static Release LoadFromFile(string prodCodeName, string verCodeName, string relCodeName)
     {
         string filePath = Path.Combine(AppGlobal.AppDataDirectory, prodCodeName, verCodeName, string.Format("{0}.{1}", relCodeName, RelXMLExtension));
@@ -101,8 +151,9 @@ public class Release
                 description = xDoc.Descendants(xtDescription).First().Value,
                 stage = xDoc.Descendants(xtStage).First().Value,
                 targetDate = xDoc.Descendants(xtTargetDate).First().Value,
-                risk = xDoc.Descendants(xtRiskLevel).First().Value;
-            var rel = new Release(xCodeName, displayName, description, stage, targetDate, risk);
+                risk = xDoc.Descendants(xtRiskLevel).First().Value,
+                buildNumber = xDoc.Descendants(xtBuildNumber).First().Value;
+            var rel = new Release(xCodeName, displayName, description, stage, targetDate, risk, buildNumber);
             rel.PermaLink = string.Format("{0}/{1}/{2}", prodCodeName, verCodeName, relCodeName);
             return rel;
         }
@@ -112,6 +163,9 @@ public class Release
         }
     }
 
+    /// <summary>
+    /// Same as <see cref="LoadFromFile(string, string, string)"/> with the addition of populating the BugListAsTable field.
+    /// </summary>
     public static Release LoadFromFileWithBugList(string prodCodeName, string verCodeName, string relCodeName)
     {
         var rel = LoadFromFile(prodCodeName, verCodeName, relCodeName);
