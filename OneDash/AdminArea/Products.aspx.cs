@@ -137,7 +137,7 @@ public partial class AdminArea_Products : System.Web.UI.Page
     {
         if (IsValidReleaseInfo())
         {
-            var release = new Release(codeName, TXTRDisplayName.Text, TXTRDescription.Text, DDLRStage.SelectedValue, TXTRTargetDate.Text, DDLRRisk.SelectedValue);
+            var release = new Release(codeName, TXTRDisplayName.Text, TXTRDescription.Text, DDLRStage.SelectedValue, TXTRTargetDate.Text, DDLRRisk.SelectedValue, "1.0.0.0");
             if (release.SaveToFile(DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue))
             {
                 AcceptUploadedFile(codeName);
