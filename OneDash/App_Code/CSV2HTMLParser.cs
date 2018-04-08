@@ -5,8 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
+/// <summary>
+/// Converts CSV Data to a HTML Table.
+/// </summary>
 public class CSV2HTMLParser
 {
+    /// <summary>
+    /// Path to the CSV File which either is to be or is already parsed.
+    /// </summary>
     public string CSVFilePath
     { get; protected set; }
 
@@ -26,6 +32,12 @@ public class CSV2HTMLParser
         return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
     }
 
+    /// <summary>
+    /// Converts the CSV file to a HTML Table.
+    /// </summary>
+    /// <param name="tableCaption">Caption for the table.</param>
+    /// <param name="stripQuotes">Indicates whether Double-Quote characters should be removed from the CSV fields.</param>
+    /// <returns>HTML snippet for the Table constructed from CSV.</returns>
     public string ToHTMLString(string tableCaption, /*bool firstRowIsHeader =true,*/ bool stripQuotes = true)
     {
         if (!File.Exists(CSVFilePath))

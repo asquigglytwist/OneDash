@@ -6,8 +6,14 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Routing;
 
+/// <summary>
+/// Static class to hold all common / shared functionality across the WebApp.
+/// </summary>
 public static class AppGlobal
 {
+    /// <summary>
+    /// Represents the "App_Data" (ASP.NET special) directory where the WebApp's local data is stored.
+    /// </summary>
     public static readonly string AppDataDirectory;
     static AppGlobal()
     {
@@ -18,6 +24,10 @@ public static class AppGlobal
         }
     }
 
+    /// <summary>
+    /// Registers a list of custom routes for routing requests within the WebApp.
+    /// </summary>
+    /// <param name="routes"></param>
     public static void RegisterOneDashCustomRoutes(RouteCollection routes)
     {
         routes.MapPageRoute("Defaults", "", "~/DashBoard.aspx", true);
@@ -28,6 +38,12 @@ public static class AppGlobal
         routes.MapPageRoute("ReleaseInfo", "Products/{ProdCode}/{VerCode}/{RelCode}", "~/AdminArea/Products.aspx", true);
     }
 
+    /// <summary>
+    /// Gets a list of FileNames (names only and not path, without their extensions).
+    /// </summary>
+    /// <param name="dir">The Directory to search in (e.g: *.txt).</param>
+    /// <param name="pattern">The Pattern to search for, within the directory.</param>
+    /// <returns>A list of file names without extensions.</returns>
     public static List<string> GetFileNamesWithoutExtension(string dir, string pattern)
     {
         if (Directory.Exists(dir))
@@ -48,6 +64,10 @@ public static class AppGlobal
         return new List<string>();
     }
 
+    /// <summary>
+    /// Creates a Directory, if it doesn't exist.
+    /// </summary>
+    /// <param name="dirPath">Path of the Directory to Create (or check).</param>
     public static void CreateDirectory(string dirPath)
     {
         if (!Directory.Exists(dirPath))

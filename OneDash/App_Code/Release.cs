@@ -26,12 +26,12 @@ public class Release
         xtBuildNumber = "BuildNumber";
 
     /// <summary>
-    /// The CodeName of the release - something catchy :).
+    /// The CodeName of the Release - something catchy :).
     /// </summary>
     public string CodeName
     { get; set; }
     /// <summary>
-    /// The Name that should be used Displayed.
+    /// The Name that should be used when Displayed.
     /// </summary>
     public string DisplayName
     { get; set; }

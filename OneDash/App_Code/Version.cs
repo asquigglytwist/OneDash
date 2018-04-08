@@ -5,24 +5,47 @@ using System.Xml.Linq;
 using System.Xml;
 using System.Collections.Generic;
 
+/// <summary>
+/// Represents a Product's Version.
+/// </summary>
 public class Version
 {
+    /// <summary>
+    /// The File-Extension to be used for the XML document where "Version" gets Serialized.
+    /// </summary>
     public const string VerXMLExtension = "ver";
-
+    /// <summary>
+    /// XML Tag Names (for private use only).
+    /// </summary>
     const string xtVersion = "Version",
         xtVersionCode = "VersionCode",
         xtDisplayName = "DisplayName",
         xtDescription = "Description";
 
+    /// <summary>
+    /// The CodeName of the Version - something catchy :).
+    /// </summary>
     public string CodeName
     { get; set; }
+    /// <summary>
+    /// The Name that should be used when Displayed.
+    /// </summary>
     public string DisplayName
     { get; set; }
+    /// <summary>
+    /// A short description of what this Version is about.
+    /// </summary>
     public string Description
     { get; set; }
+    /// <summary>
+    /// Direct link (URL) to this Version within the Products page.
+    /// </summary>
     public string PermaLink
     { get; set; }
 
+    /// <summary>
+    /// A list of Release(s) that this Version has.
+    /// </summary>
     public List<Release> ProductVersionReleases
     { get; set; }
 
@@ -65,12 +88,23 @@ public class Version
         }
     }
 
+    /// <summary>
+    /// Retrieves a list of all ReleaseCodes that this Version has.
+    /// </summary>
+    /// <param name="productCode">CodeName of the Product for which ReleaseCodes are to be retrieved.</param>
+    /// <returns>List of ReleaseCodes for the Version.</returns>
     public List<string> GetAllReleaseCodes(string productCode)
     {
         var dirPath = Path.Combine(AppGlobal.AppDataDirectory, productCode, CodeName);
         return AppGlobal.GetFileNamesWithoutExtension(dirPath, string.Format("*.{0}", Release.RelXMLExtension));
     }
 
+    /// <summary>
+    /// Load information on a Version from (previously) saved XML (.ver) file.
+    /// </summary>
+    /// <param name="prodCodeName">The associated Product's CodeName.</param>
+    /// <param name="verCodeName">The associated Version's CodeName.</param>
+    /// <returns>A Version object constructed by DeSerializing the XML file.</returns>
     public static Version LoadFromFile(string prodCodeName, string verCodeName)
     {
         string filePath = Path.Combine(AppGlobal.AppDataDirectory, prodCodeName, string.Format("{0}.{1}", verCodeName, VerXMLExtension));

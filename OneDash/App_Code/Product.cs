@@ -5,10 +5,18 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
+/// <summary>
+/// Represents a Product.
+/// </summary>
 public class Product
 {
+    /// <summary>
+    /// The File-Extension to be used for the XML document where "Product" gets Serialized.
+    /// </summary>
     public const string ProdXMLExtension = "prod";
-
+    /// <summary>
+    /// XML Tag Names (for private use only).
+    /// </summary>
     const string xtProduct = "Product",
         xtCodeName = "CodeName",
         xtDisplayName = "DisplayName",
@@ -29,19 +37,40 @@ public class Product
         VersionsDirPath = Path.Combine(AppGlobal.AppDataDirectory, CodeName);
     }
 
+    /// <summary>
+    /// The CodeName of the Product - something catchy :).
+    /// </summary>
     public string CodeName
     { get; set; }
+    /// <summary>
+    /// The Name that should be used when Displayed.
+    /// </summary>
     public string DisplayName
     { get; set; }
+    /// <summary>
+    /// A short description of what this Version is about.
+    /// </summary>
     public string Description
     { get; set; }
+    /// <summary>
+    /// The Project Manager for this Product.
+    /// </summary>
     public string ProjectManager
     { get; set; }
+    /// <summary>
+    /// The Product Manager for this Product.
+    /// </summary>
     public string ProductManager
     { get; set; }
+    /// <summary>
+    /// Direct link (URL) to this Product within the Products page.
+    /// </summary>
     public string PermaLink
     { get; set; }
 
+    /// <summary>
+    /// A list of Version(s) that this Product has.
+    /// </summary>
     public List<Version> ProductVersions
     { get; set; }
 
@@ -81,16 +110,28 @@ public class Product
         }
     }
 
+    /// <summary>
+    /// Retrieves a list of all VersionCodes that this Product has.
+    /// </summary>
+    /// <returns>List of VersionCodes for the Version.</returns>
     public List<string> GetAllVersionCodes()
     {
         return AppGlobal.GetFileNamesWithoutExtension(VersionsDirPath, string.Format("*.{0}", Version.VerXMLExtension));
     }
 
+    /// <summary>
+    /// Retrieves a list of all ProductCodes that are currently known (i.e., available).
+    /// </summary>
     public static List<string> GetAllProductCodeNames()
     {
         return AppGlobal.GetFileNamesWithoutExtension(AppGlobal.AppDataDirectory, string.Format("*.{0}", Product.ProdXMLExtension));
     }
 
+    /// <summary>
+    /// Load information on a Product from (previously) saved XML (.prod) file.
+    /// </summary>
+    /// <param name="codeName">The associated Product's CodeName.</param>
+    /// <returns>A Product object constructed by DeSerializing the XML file.</returns>
     public static Product LoadFromFile(string codeName)
     {
         var xmlFileName = string.Format("{0}.{1}", codeName, ProdXMLExtension);
