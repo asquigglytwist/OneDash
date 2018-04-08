@@ -156,8 +156,10 @@ public partial class AdminArea_Products : System.Web.UI.Page
                 {
                     var dirPath = Path.Combine(AppGlobal.AppDataDirectory, DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue, relCodeName);
                     AppGlobal.CreateDirectory(dirPath);
-                    var filePath = Path.Combine(dirPath, "BugList.csv");
-                    FURBugList.SaveAs(filePath);
+                    var csvFilePath = Path.Combine(dirPath, "BugList.csv");
+                    FURBugList.SaveAs(csvFilePath);
+                    var cachedHTMLSnippetFilePath = Path.Combine(dirPath, "BugList.htmlSnippet");
+                    File.Delete(cachedHTMLSnippetFilePath);
                 }
                 else
                 {
