@@ -3,6 +3,8 @@
     --transition-time: 1.2s;
     --mild-alternating-color: #f5f5f5;
     --panel-boundary-color: #080808;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .noListStyle {
@@ -39,7 +41,8 @@
 }
 
 input[disabled],
-.ghostButton[disabled] {
+.ghostButton[disabled],
+select[disabled] {
     background-color: black;
     color: gray;
     font-style: italic;
@@ -48,11 +51,18 @@ input[disabled],
     font-family: 'Times New Roman', Times, serif;
 }
 
-input[type="text"][disabled] {
+/*input[type="text"][disabled], select[disabled] {
     opacity: 0.3;
-}
+}*/
 
 .ghostButton[disabled] {
     text-decoration: line-through;
-    transform: rotate(180deg);
+}
+
+.ghostButton[disabled]:nth-of-type(odd) {
+    transform: rotate(5deg);
+}
+
+.ghostButton[disabled]:nth-of-type(even) {
+    transform: rotate(-5deg);
 }
