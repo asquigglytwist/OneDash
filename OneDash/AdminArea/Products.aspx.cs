@@ -299,6 +299,7 @@ public partial class AdminArea_Products : System.Web.UI.Page
     #region Page
     protected void Page_PreInit(object sender, EventArgs e)
     {
+        Page.ReWriteUrlsWithAdminArea();
         Page.DecodeUrlString();
     }
 

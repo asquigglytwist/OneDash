@@ -93,3 +93,30 @@ public static class AppGlobal
         }
         return newUrl;
     }
+
+    public static void ReWriteUrlsWithAdminArea(this System.Web.UI.Page page/*ref HttpRequest request, ref HttpResponse response*/)
+    {
+        bool changed = false;
+        var newUrl = page.Request.Url.ToString();
+        if (newUrl.Contains("AdminArea"))
+        {
+            newUrl = newUrl.Replace("AdminArea", "");
+            changed = true;
+        }
+        if (newUrl.Contains(".aspx"))
+        {
+            newUrl = newUrl.Replace(".aspx", "");
+            changed = true;
+        }
+        int i = newUrl.IndexOf("//", 8);
+        if (i > 0)
+        {
+            newUrl = newUrl.Substring(0, i) + newUrl.Substring(i + 1);
+            changed = true;
+        }
+        if (changed)
+        {
+            page.Response.Redirect(newUrl.ToString(), true);
+        }
+    }
+}
