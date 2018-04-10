@@ -30,6 +30,11 @@ public partial class DashBoard : System.Web.UI.Page
         }
     }
 
+    protected void Page_PreInit(object sender, EventArgs e)
+    {
+        Page.ReWriteUrlsWithAdminArea();
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         LoadAllInfo();
