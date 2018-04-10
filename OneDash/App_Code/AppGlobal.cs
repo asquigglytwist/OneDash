@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Routing;
+using System.Web.UI;
 
 /// <summary>
 /// Static class to hold all common / shared functionality across the WebApp.
@@ -75,4 +77,19 @@ public static class AppGlobal
             Directory.CreateDirectory(dirPath);
         }
     }
-}
+
+    public static string DecodeUrlString(this Page page)
+    {
+        // [BIB]:  https://stackoverflow.com/questions/1405048/how-do-i-decode-a-url-parameter-using-c
+        var url = page.Request.Url.ToString();
+        var newUrl = Uri.UnescapeDataString(url);
+        while ((newUrl = Uri.UnescapeDataString(newUrl)) != newUrl)
+        {
+            //newUrl = newUrl;
+        }
+        if (!newUrl.Equals(url))
+        {
+            page.Response.Redirect(newUrl, true);
+        }
+        return newUrl;
+    }

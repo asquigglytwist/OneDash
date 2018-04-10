@@ -297,6 +297,11 @@ public partial class AdminArea_Products : System.Web.UI.Page
     #endregion
 
     #region Page
+    protected void Page_PreInit(object sender, EventArgs e)
+    {
+        Page.DecodeUrlString();
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Request.IsAuthenticated)
