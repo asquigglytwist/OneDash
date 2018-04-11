@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Web.UI.WebControls;
 
 public partial class AdminArea_Products : System.Web.UI.Page
@@ -81,11 +82,12 @@ public partial class AdminArea_Products : System.Web.UI.Page
 
     private bool IsValidReleaseInfo()
     {
-        TextBox[] textBoxes = { TXTRReleaseCode, TXTRDisplayName, TXTRDescription, TXTRTargetDate };
+        TextBox[] textBoxes = { TXTRReleaseCode, TXTRDisplayName, TXTRDescription, TXTRTargetDate, TXTRBuildNumber };
         string[] errorMsgs = { "CodeName.",
             "DisplayName",
             "Description",
-            "TargetDate"
+            "TargetDate",
+            "BuildNumber"
         };
         for (var i = 0; i < textBoxes.Length; i++)
         {
@@ -101,6 +103,10 @@ public partial class AdminArea_Products : System.Web.UI.Page
         if (DDLRRisk.SelectedValue.Equals(NoneSelectedValue))
         {
             throw new Exception("RiskLevel of the release is mandatory.");
+        }
+        if (DDLRType.SelectedValue.Equals(NoneSelectedValue))
+        {
+            throw new Exception("ReleaseType of the release is mandatory.");
         }
         return true;
     }
@@ -137,7 +143,8 @@ public partial class AdminArea_Products : System.Web.UI.Page
     {
         if (IsValidReleaseInfo())
         {
-            var release = new Release(codeName, TXTRDisplayName.Text, TXTRDescription.Text, DDLRStage.SelectedValue, TXTRTargetDate.Text, DDLRRisk.SelectedValue, "1.0.0.0");
+            var release = new Release(codeName, TXTRDisplayName.Text, TXTRDescription.Text, DDLRStage.SelectedValue,
+                TXTRTargetDate.Text, DDLRRisk.SelectedValue, TXTRBuildNumber.Text, DDLRType.SelectedValue);
             if (release.SaveToFile(DDLExistingProducts.SelectedValue, DDLExistingVersions.SelectedValue))
             {
                 AcceptUploadedFile(codeName);
@@ -247,6 +254,8 @@ public partial class AdminArea_Products : System.Web.UI.Page
         DDLRStage.SelectedValue = release.Stage.ToString();
         TXTRTargetDate.Text = release.TargetDate;
         DDLRRisk.SelectedValue = release.Risk.ToString();
+        TXTRBuildNumber.Text = release.BuildNumber;
+        DDLRType.SelectedValue = release.ReleaseType.ToString();
         TXTRReleaseCode.Enabled = BTNRAdd.Enabled = false;
         BTNRUpdate.Enabled = true;
     }
@@ -260,6 +269,8 @@ public partial class AdminArea_Products : System.Web.UI.Page
             var prodCode = prodCodeObj.ToString();
             if (DDLExistingProducts.Items.FindByValue(prodCode) != null)
             {
+                var newTitle = new StringBuilder("Product - ");
+                newTitle.Append(prodCode);
                 DDLExistingProducts.SelectedValue = prodCode;
                 OnProductSelectionChange();
                 if (routeDataValues.TryGetValue("VerCode", out object verCodeObj))
@@ -267,11 +278,13 @@ public partial class AdminArea_Products : System.Web.UI.Page
                     var verCode = verCodeObj.ToString();
                     if (DDLExistingVersions.Items.FindByValue(verCode) != null)
                     {
+                        newTitle.AppendFormat(" / {0}", verCode);
                         DDLExistingVersions.SelectedValue = verCode;
                         OnVersionSelectionChange();
                         if (routeDataValues.TryGetValue("RelCode", out object relCodeObj))
                         {
                             var relCode = relCodeObj.ToString();
+                            newTitle.AppendFormat(" / {0}", relCode);
                             if (DDLExistingReleases.Items.FindByValue(relCode) != null)
                             {
                                 DDLExistingReleases.SelectedValue = relCode;
@@ -280,6 +293,7 @@ public partial class AdminArea_Products : System.Web.UI.Page
                         }
                     }
                 }
+                Page.Title = newTitle.ToString();
             }
         }
     }
@@ -328,6 +342,7 @@ public partial class AdminArea_Products : System.Web.UI.Page
             DDLExistingVersions.Enabled = DDLExistingReleases.Enabled = false;
             AddEnumValuesToDropDown(DDLRRisk, typeof(RiskLevel));
             AddEnumValuesToDropDown(DDLRStage, typeof(ReleaseStages));
+            AddEnumValuesToDropDown(DDLRType, typeof(ReleaseTypes));
             ToggleVersionPanelEnabled(false);
             ToggleReleasePanelEnabled(false);
         }
