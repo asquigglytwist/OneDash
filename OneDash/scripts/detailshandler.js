@@ -11,15 +11,15 @@ function onInit() {
     var ndCurrentProducts = document.getElementById("CurrentProducts").getElementsByTagName("details");
     if (ndCurrentProducts.length > 0) {
         var firstProduct = ndCurrentProducts[0];
-        firstProduct.setAttribute("open", "");
+        firstProduct.setAttribute("open", "open");
         var ndVersions = firstProduct.getElementsByTagName("details");
         if (ndVersions.length > 0) {
             var firstVersion = ndVersions[0];
-            firstVersion.setAttribute("open", "");
+            firstVersion.setAttribute("open", "open");
             var ndReleases = firstVersion.getElementsByTagName("details");
             if (ndReleases.length > 0) {
                 var firstRelease = ndReleases[0];
-                firstRelease.setAttribute("open", "");
+                firstRelease.setAttribute("open", "open");
             }
         }
     }
