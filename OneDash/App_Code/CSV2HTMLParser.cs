@@ -46,7 +46,7 @@ public class CSV2HTMLParser
         }
         var sbHTable = new StringBuilder();
         var curLine = string.Empty;
-        sbHTable.AppendFormat("<table><caption>{0}</caption>", tableCaption);
+        sbHTable.AppendFormat("<table><caption title=\"{0}\">{0}</caption>", tableCaption);
         sbHTable.Append("<tbody>");
         foreach (var line in File.ReadLines(CSVFilePath))
         {
