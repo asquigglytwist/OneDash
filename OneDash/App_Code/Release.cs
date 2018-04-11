@@ -23,7 +23,8 @@ public class Release
         xtStage = "Stage",
         xtTargetDate = "TargetDate",
         xtRiskLevel = "RiskLevel",
-        xtBuildNumber = "BuildNumber";
+        xtBuildNumber = "BuildNumber",
+        xtReleaseType = "ReleaseType";
 
     /// <summary>
     /// The CodeName of the Release - something catchy :).
@@ -65,6 +66,8 @@ public class Release
     /// </summary>
     public string BuildNumber
     { get; set; }
+    public ReleaseTypes ReleaseType
+    { get; set; }
 
     /// <summary>
     /// (An optional) HTML Table snippet of the Bug List for the Release, if a CSV is available.
@@ -72,7 +75,7 @@ public class Release
     public string BugListAsTable
     { get; protected set; }
 
-    public Release(string codeName, string displayName, string description, string stage, string targetDate, string risk, string buildNumber)
+    public Release(string codeName, string displayName, string description, string stage, string targetDate, string risk, string buildNumber, string relType)
     {
         CodeName = codeName ?? throw new ArgumentNullException(nameof(codeName));
         DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
@@ -82,10 +85,26 @@ public class Release
         {
             Stage = relStage;
         }
+        else
+        {
+            throw new Exception(string.Format("Value specified for ReleaseStage - {0}, is not recognized.", stage));
+        }
         TargetDate = targetDate;
         if (Enum.TryParse(risk, out RiskLevel riskLevel))
         {
             Risk = riskLevel;
+        }
+        else
+        {
+            throw new Exception(string.Format("Value specified for RiskLevel - {0}, is not recognized.", riskLevel));
+        }
+        if (Enum.TryParse(relType, out ReleaseTypes rType))
+        {
+            ReleaseType = rType;
+        }
+        else
+        {
+            throw new Exception(string.Format("Value specified for RiskLevel - {0}, is not recognized.", riskLevel));
         }
     }
 
@@ -152,9 +171,12 @@ public class Release
                 stage = xDoc.Descendants(xtStage).First().Value,
                 targetDate = xDoc.Descendants(xtTargetDate).First().Value,
                 risk = xDoc.Descendants(xtRiskLevel).First().Value,
-                buildNumber = xDoc.Descendants(xtBuildNumber).First().Value;
-            var rel = new Release(xCodeName, displayName, description, stage, targetDate, risk, buildNumber);
-            rel.PermaLink = string.Format("{0}/{1}/{2}", prodCodeName, verCodeName, relCodeName);
+                buildNumber = xDoc.Descendants(xtBuildNumber).First().Value,
+                relType = xDoc.Descendants(xtReleaseType).First().Value;
+            var rel = new Release(xCodeName, displayName, description, stage, targetDate, risk, buildNumber, relType)
+            {
+                PermaLink = string.Format("{0}/{1}/{2}", prodCodeName, verCodeName, relCodeName)
+            };
             return rel;
         }
         catch (Exception e)
