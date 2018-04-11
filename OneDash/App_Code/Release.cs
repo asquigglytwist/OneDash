@@ -124,7 +124,8 @@ public class Release
             ndStage = xDoc.CreateElement(xtStage),
             ndTargetDate = xDoc.CreateElement(xtTargetDate),
             ndRiskLevel = xDoc.CreateElement(xtRiskLevel),
-            ndBuildNumber = xDoc.CreateElement(xtBuildNumber);
+            ndBuildNumber = xDoc.CreateElement(xtBuildNumber),
+            ndReleaseType = xDoc.CreateElement(xtReleaseType);
         ndCodeName.InnerText = CodeName;
         ndDisplayName.InnerText = DisplayName;
         ndDescription.InnerText = Description;
@@ -132,6 +133,7 @@ public class Release
         ndTargetDate.InnerText = TargetDate;
         ndRiskLevel.InnerText = Risk.ToString();
         ndBuildNumber.InnerText = BuildNumber.ToString();
+        ndReleaseType.InnerText = ReleaseType.ToString();
         docRoot.AppendChild(ndCodeName);
         docRoot.AppendChild(ndDisplayName);
         docRoot.AppendChild(ndDescription);
@@ -139,6 +141,7 @@ public class Release
         docRoot.AppendChild(ndTargetDate);
         docRoot.AppendChild(ndRiskLevel);
         docRoot.AppendChild(ndBuildNumber);
+        docRoot.AppendChild(ndReleaseType);
         xDoc.AppendChild(docRoot);
         try
         {
