@@ -14,14 +14,6 @@ li.releaseDetails {
     transition: border-color var(--transition-time) ease-out, border-radius var(--transition-time) ease-out, background-color var(--transition-time) ease-out;
 }
 
-li.releaseDetails > details > summary > section:first-of-type {
-    min-width: 60vw;
-    width: 65%;
-    display: inline-grid;
-    grid-gap: 10px;
-    grid-template-columns: 12em 10em 10em auto;
-}
-
 li.releaseDetails:hover,
 li.releaseDetails:focus,
 li.releaseDetails:active {
@@ -30,16 +22,42 @@ li.releaseDetails:active {
     border-color: black;
 }
 
-li.releaseDetails summary[data-risk-level="Green"] {
-    background-color: #99ff99;
+li.releaseDetails > details {
+    border-radius: 3px;
+    border: 1px dotted black;
 }
 
-li.releaseDetails summary[data-risk-level="Yellow"] {
-    background-color: #ffffa5;
+li.releaseDetails > details > summary > section:first-of-type {
+    min-width: 60vw;
+    width: 65%;
+    display: inline-grid;
+    grid-gap: 10px;
+    grid-template-columns: 12em 10em 10em auto;
 }
 
-li.releaseDetails summary[data-risk-level="Red"] {
-    background-color: #ff5050;
+li.releaseDetails > details > summary > section > div {
+    border: 1px solid black;
+    text-align: center;
+}
+
+li.releaseDetails > details > summary > section > div:last-child {
+    /*border-right: none;*/
+}
+
+li.releaseDetails > details > summary > section > div[data-risk-level] {
+    /*border-left: 10px outset;*/
+}
+
+li.releaseDetails div[data-risk-level="Green"] {
+    background-color: green;
+}
+
+li.releaseDetails div[data-risk-level="Yellow"] {
+    background-color: yellow;
+}
+
+li.releaseDetails div[data-risk-level="Red"] {
+    background-color: red;
 }
 
 table {
