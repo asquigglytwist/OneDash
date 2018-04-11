@@ -32,7 +32,7 @@
                                 <li class="versionDetails">
                                     <details>
                                         <summary>
-                                            <h4 class="inlineBlock"><%# Eval("DisplayName") %></h4>
+                                            <h4 class="inlineBlock" title="<%# Eval("DisplayName") %>"><%# Eval("DisplayName") %></h4>
                                             <div class="editLink"><a href="/Products/<%# Eval("PermaLink") %>" title="Click to Edit the Version details">Edit</a></div>
                                         </summary>
                                         <ul class="noListStyle">
@@ -40,18 +40,18 @@
                                                 <ItemTemplate>
                                                     <li class="releaseDetails">
                                                         <details>
-                                                            <summary data-risk-level="<%# Eval("Risk").ToString() %>">
+                                                            <summary>
                                                                 <section>
-                                                                    <div class="inlineBlock">
+                                                                    <div class="inlineBlock" title="<%# Eval("DisplayName") %>">
                                                                         <%# Eval("DisplayName") %>
                                                                     </div>
-                                                                    <div class="inlineBlock">
+                                                                    <div class="inlineBlock" title="<%# Eval("Stage").ToString() %>">
                                                                         <%# Eval("Stage").ToString() %>
                                                                     </div>
-                                                                    <div class="inlineBlock">
+                                                                    <div class="inlineBlock" title="<%# Eval("TargetDate") %>">
                                                                         <%# Eval("TargetDate") %>
                                                                     </div>
-                                                                    <div class="inlineBlock">
+                                                                    <div class="inlineBlock" title="<%# Eval("Risk").ToString() %>" data-risk-level="<%# Eval("Risk").ToString() %>">
                                                                         <%# Eval("Risk").ToString() %>
                                                                     </div>
                                                                 </section>
