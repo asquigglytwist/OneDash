@@ -105,6 +105,12 @@
                 <label for="DDLRRisk">Risk Assessment</label>
                 <asp:DropDownList ID="DDLRRisk" runat="server"
                     ToolTip="(Assessed) Risk Level of the Release." />
+                <label for="TXTRBuildNumber">Build Number</label>
+                <asp:TextBox ID="TXTRBuildNumber" runat="server"
+                    ToolTip="Build Number for the Release." />
+                <label for="DDLRType">Release Type</label>
+                <asp:DropDownList ID="DDLRType" runat="server"
+                    ToolTip="Type of the Release - Major, RePost, Patch or HotFix." />
                 <label for="FURBugList">Bug List (CSV)</label>
                 <asp:FileUpload ID="FURBugList" runat="server" AllowMultiple="false"
                     ToolTip="(CSV) file with Bug List for the Release; Max permitted size = 25MB." />
