@@ -11,7 +11,7 @@
     <form id="frmLogin" runat="server">
         UserName: <asp:TextBox ID="TXTLUserName" runat="server" /> <br />
         PassWord: <asp:TextBox ID="TXTLPassWord" runat="server" TextMode="Password" />
-        <p><asp:button id="BTNSubmit" Text="Login" runat="server" OnClick="BTNSubmit_Click" />
+        <p><asp:button id="BTNSubmit" Text="Login" runat="server" OnClick="BTNSubmit_Click" /></p>
     </form>
 </body>
 </html>
